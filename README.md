@@ -582,6 +582,20 @@ Successfully tagged ashunginx:v1
 ```
 
 
+## creating container out of build 
+
+```
+10124  docker  run -itd  --name myashuc1  -p 1122:80   ashunginx:v1 
+10125  docker  ps
+❯ docker  ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED              STATUS              PORTS                           NAMES
+65d3ab5e481c   titobeg:v1       "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:32356->80/tcp           titubegin1
+ded55ffca48a   sankalita        "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp, 0.0.0.0:3333->333/tcp   sankalita
+23139c5762fa   ravinginx:v001   "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:5999->80/tcp            ravi5
+f597186b7c02   ashunginx:v1     "/docker-entrypoint.…"   2 minutes ago        Up 2 minutes        0.0.0.0:1122->80/tcp            myashuc1
+1ac0cff1baa6   titobeg:v1       "/docker-entrypoint.…"   2 minut
+
+```
 
 
 
