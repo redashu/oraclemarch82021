@@ -439,6 +439,48 @@ CONTAINER ID   IMAGE             COMMAND             CREATED         STATUS     
 
 ```
 
+## Building docker images 
+
+<img src="build.png">
+
+### building python code based docker image
+
+```
+ docker   build  -t  ashupython:v001   /Users/fire/Desktop/myimages/pythoncode 
+ 
+```
+
+## more command for build 
+
+```
+10085  docker   build  -t  ashupython:v001   /Users/fire/Desktop/myimages/pythoncode 
+10086  docker  images
+❯ cd  /Users/fire/Desktop/myimages/pythoncode
+❯ 
+❯ docker   build  -t  ashupython:v002   .
+Sending build context to Docker daemon  3.584kB
+Step 1/6 : FROM oraclelinux:8.3
+ ---> d8ccb1b24024
+Step 2/6 : MAINTAINER  ashutoshh@linux.com
+ ---> Using cache
+ ---> 23bf0d09ef0e
+Step 3/6 : RUN  dnf install python3 -y
+ ---> Using cache
+ ---> 3b95e947d496
+Step 4/6 : RUN mkdir  /mycode
+ ---> Using cache
+ ---> 89022fb72b97
+Step 5/6 : COPY  hello.py  /mycode/hello.py
+ ---> Using cache
+ ---> 17013d1d0768
+Step 6/6 : CMD   ["python3" ,"/mycode/hello.py"]
+ ---> Using cache
+ ---> a60063941b12
+Successfully built a60063941b12
+Successfully tagged ashupython:v002
+
+```
+
 
 
 
