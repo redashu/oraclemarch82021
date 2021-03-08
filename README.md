@@ -481,6 +481,107 @@ Successfully tagged ashupython:v002
 
 ```
 
+## Docker image build history 
+
+```
+❯ docker  history ashupython:v001
+IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
+a60063941b12   36 minutes ago   /bin/sh -c #(nop)  CMD ["python3" "/mycode/h…   0B        
+17013d1d0768   36 minutes ago   /bin/sh -c #(nop) COPY file:4b0c3e3a3ef65914…   231B      
+89022fb72b97   36 minutes ago   /bin/sh -c mkdir  /mycode                       0B        
+3b95e947d496   36 minutes ago   /bin/sh -c dnf install python3 -y               126MB     
+23bf0d09ef0e   36 minutes ago   /bin/sh -c #(nop)  MAINTAINER ashutoshh@linu…   0B        
+d8ccb1b24024   4 weeks ago      /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B        
+<missing>      4 weeks ago      /bin/sh -c #(nop) ADD file:ac3abfcde004b7133…   223MB   
+
+```
+
+
+## Dump of docker image for info purpose 
+
+```
+ docker  inspect  ashupython:v001
+[
+    {
+        "Id": "sha256:a60063941b128bff86b5ef8aa6c14cb36d64f5fd19c0fc7b9902c16c92848215",
+        "RepoTags": [
+            "ashupython:v001",
+            "ashupython:v002"
+        ],
+        "RepoDigests": [],
+        "Parent": "sha256:17013d1d07688eadc0736c41f5bca5493c9653f00c5f8641e51c5126065e03ad",
+        "Comment": "",
+        "Created": "2021-03-08T10:16:13.185014778Z",
+        "Container": "5a6ba4e74f7ff32913e77930638c79061faa894e76769979c2bba8e7aff103f7",
+        "ContainerConfig": {
+            "Hostname": "5a6ba4e74f7f",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+
+```
+
+### creating container from last build image 
+
+```
+❯ docker run -it -d  --name ashuc01  ashupython:v001
+9993ddf8dd7cc254e2c5f3ee0ea1e0d54e4ccac6b0743417028ce6cb6136f3b2
+❯ 
+❯ docker  ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED             STATUS             PORTS     NAMES
+9993ddf8dd7c   ashupython:v001   "python3 /mycode/hel…"   7 seconds ago       Up 5 seconds                 ashuc01
+a63469036a15   ravipython:v001   "python3 /mycode/hel…"   31 minutes ago      Up 31 minutes                ravi2
+4f8e9d91d26b   jerijosepy:v001   "python3 /mycode/hel…"   37 minutes ago      Up 37 minutes                jerijosepy
+
+```
+
+## check output of python code live using this 
+
+```
+docker  logs -f  ashuc01 
+```
+
+# webapp to containers 
+
+## some webserver 
+
+<img src="webs.png">
+
+## doing image build 
+
+```
+❯ ls
+CODE_OF_CONDUCT.md LICENSE            images             styles
+Dockerfile         README.md          index.html
+❯ docker  build  -t   ashunginx:v1  .
+Sending build context to Docker daemon     64kB
+Step 1/3 : FROM nginx
+latest: Pulling from library/nginx
+45b42c59be33: Already exists 
+8acc495f1d91: Pull complete 
+ec3bd7de90d7: Pull complete 
+19e2441aeeab: Pull complete 
+f5a38c5f8d4e: Pull complete 
+83500d851118: Pull complete 
+Digest: sha256:f3693fe50d5b1df1ecd315d54813a77afd56b0245a404055a946574deb6b34fc
+Status: Downloaded newer image for nginx:latest
+ ---> 35c43ace9216
+Step 2/3 : MAINTAINER  ashutoshh@linux.com
+ ---> Running in 4642747ad9c1
+Removing intermediate container 4642747ad9c1
+ ---> 3fe672cf5eed
+Step 3/3 : COPY .  /usr/share/nginx/html/
+ ---> 6d66360b4fef
+Successfully built 6d66360b4fef
+Successfully tagged ashunginx:v1
+
+```
+
+
 
 
 
