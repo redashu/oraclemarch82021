@@ -299,6 +299,146 @@ fec5cde7e365   oraclelinux:8.3   "ping 127.0.0.1"   45 seconds ago       Exited 
 ```
 
 
+## checking all the running containers 
+
+```
+❯ docker  ps
+CONTAINER ID   IMAGE             COMMAND            CREATED             STATUS             PORTS     NAMES
+562546682b6a   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour             kiran
+7d3d87abab21   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour             dharam
+3a0fdc24816e   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour             AV
+e81b0343426c   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour             avijit
+a7839bbf1024   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour             sankalita
+db0dcef7818f   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour             jerijose
+63b5e4dd466a   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour             balaji
+6a291509d02a   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour             ravi1
+
+```
+
+## all type of containers 
+
+```
+❯ docker  ps  -a
+CONTAINER ID   IMAGE             COMMAND            CREATED             STATUS                         PORTS     NAMES
+562546682b6a   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour                         kiran
+13dbdc82f6d6   oraclelinux:8.3   "date"             About an hour ago   Exited (0) About an hour ago             titu1
+7d3d87abab21   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour                         dharam
+3a0fdc24816e   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour                         AV
+e81b0343426c   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour                         avijit
+a7839bbf1024   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour                         sankalita
+db0dcef7818f   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour                         jerijose
+63b5e4dd466a   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour                         balaji
+fec5cde7e365   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Exited (0) About an hour ago             titu
+6a291509d02a   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up About an hour                         ravi1
+6d79538fc44c   oraclelinux:8.3   "hostname"         About an hour ago   Created                                  titukp
+0f23b77d2f1a   oraclelinux:8.3   "ping 127.0.0.1"   2 hours ago         Exited (0) 2 hours ago                   ashuc1
+
+
+```
+
+### running a child process in already running container 
+
+```
+❯ docker  exec  -it   ashuc1   bash
+[root@0f23b77d2f1a /]# uname 
+Linux
+[root@0f23b77d2f1a /]# uname -r
+4.14.219-161.340.amzn2.x86_64
+[root@0f23b77d2f1a /]# 
+[root@0f23b77d2f1a /]# 
+[root@0f23b77d2f1a /]# 
+[root@0f23b77d2f1a /]# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@0f23b77d2f1a /]# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+38: eth0@if39: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+    link/ether 02:42:ac:11:00:04 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.17.0.4/16 brd 172.17.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+[root@0f23b77d2f1a /]# 
+[root@0f23b77d2f1a /]# ping  gogole.com
+PING gogole.com (172.253.63.147) 56(84) bytes of data.
+64 bytes from 172.253.63.147 (172.253.63.147): icmp_seq=1 ttl=97 time=0.791 ms
+64 bytes from 172.253.63.147 (172.253.63.147): icmp_seq=2 ttl=97 time=0.776 ms
+64 bytes from 172.253.63.147 (172.253.63.147): icmp_seq=3 ttl=97 time=0.829 ms
+^C
+--- gogole.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 86ms
+rtt min/avg/max/mdev = 0.776/0.798/0.829/0.039 ms
+[root@0f23b77d2f1a /]# exit
+exit
+
+```
+
+### killing all the running containers
+
+```
+❯ docker  ps
+CONTAINER ID   IMAGE             COMMAND            CREATED             STATUS              PORTS     NAMES
+562546682b6a   oraclelinux:8.3   "ping 127.0.0.1"   About an hour ago   Up 14 minutes                 kiran
+7d3d87abab21   oraclelinux:8.3   "ping 127.0.0.1"   2 hours ago         Up 16 minutes                 dharam
+3a0fdc24816e   oraclelinux:8.3   "ping 127.0.0.1"   2 hours ago         Up 2 hours                    AV
+e81b0343426c   oraclelinux:8.3   "ping 127.0.0.1"   2 hours ago         Up 2 hours                    avijit
+a7839bbf1024   oraclelinux:8.3   "ping 127.0.0.1"   2 hours ago         Up 14 minutes                 sankalita
+db0dcef7818f   oraclelinux:8.3   "ping 127.0.0.1"   2 hours ago         Up 15 minutes                 jerijose
+63b5e4dd466a   oraclelinux:8.3   "ping 127.0.0.1"   2 hours ago         Up About a minute             balaji
+❯ docker  ps  -q
+562546682b6a
+7d3d87abab21
+3a0fdc24816e
+e81b0343426c
+a7839bbf1024
+db0dcef7818f
+63b5e4dd466a
+❯ docker kill   $(docker  ps  -q)
+562546682b6a
+7d3d87abab21
+3a0fdc24816e
+e81b0343426c
+a7839bbf1024
+db0dcef7818f
+63b5e4dd466a
+❯ docker  ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+## if you want to remove all non running containers 
+
+```
+❯ docker rm  $(docker  ps -a  -q)
+2e7af96d283b
+562546682b6a
+13dbdc82f6d6
+7d3d87abab21
+3a0fdc24816e
+e81b0343426c
+a7839bbf1024
+db0dcef7818f
+63b5e4dd466a
+fec5cde7e365
+6a291509d02a
+6d79538fc44c
+❯ docker  ps  -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+
+```
+
+### Best practise to create container from any image 
+
+```
+❯ docker  run  -it -d   --name ashuc3  oraclelinux:8.3   ping google.com
+6e014ca8b9d4a576487881540f24890e47cba213df6ca835ad4eac411f0f4ee0
+❯ docker  ps
+CONTAINER ID   IMAGE             COMMAND             CREATED         STATUS         PORTS     NAMES
+6e014ca8b9d4   oraclelinux:8.3   "ping google.com"   6 seconds ago   Up 4 seconds             ashuc3
+
+
+```
+
 
 
 
