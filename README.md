@@ -1,1 +1,10 @@
-# Check branches from day1 to day5 to revise content 
+# Getting started with Docker 
+
+## If deployment is gonna happend 
+
+<img src="app.png">
+
+## problems 
+
+<img src="hard.png">
+
