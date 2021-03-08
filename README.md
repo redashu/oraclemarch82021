@@ -16,5 +16,19 @@
 
 <img src="os.png">
 
+# Introduction to containers 
+
+<img src="container.png">
+
+## hypervisor vs CRE 
+
+<img src="cre.png">
+
+## Docker with Kernel 
+
+<img src="docker.png">
+
+
+
 
 
