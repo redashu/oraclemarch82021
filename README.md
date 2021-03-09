@@ -120,5 +120,33 @@ Removing login credentials for https://index.docker.io/v1/
 
 <img src="quay.png">
 
+## Java based application 
+
+```
+10091  docker  build  -t   ashutomcat:v1 .
+10092  history
+10093  docker  build  -t   dockerashu/ashutomcat:v1 .
+❯ docker  login -u dockerashu
+Password: 
+Login Succeeded
+❯ docker push  dockerashu/ashutomcat:v1
+The push refers to repository [docker.io/dockerashu/ashutomcat]
+4670a1e9be5b: Pushed 
+c4f1ce0a5e5f: Pushed 
+bf9340433aef: Pushed 
+7fb88fd31920: Mounted from library/tomcat 
+27513d995379: Mounted from library/tomcat 
+fcbe7aa3012d: Mounted from library/tomcat 
+ebab439b6c1b: Mounted from library/tomcat 
+c44cd007351c: Mounted from library/tomcat 
+02f0a7f763a3: Mounted from library/tomcat 
+da654bc8bc80: Mounted from library/tomcat 
+4ef81dc52d99: Mounted from library/tomcat 
+909e93c71745: Mounted from library/tomcat 
+7f03bfe4d6dc: Mounted from library/tomcat 
+v1: digest: sha256:87107b57ef60a16417a66f42ab4a94da49057215d252bfcdc2fd207a1173177c size: 3044
+
+
+```
 
 
