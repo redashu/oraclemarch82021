@@ -404,4 +404,111 @@ round-trip min/avg/max = 0.088/0.135/0.218 ms
 
 ```
 
+## To delete bridge you have to delete all the containers first 
 
+```
+❯ docker  network  prune
+WARNING! This will remove all custom networks not used by at least one container.
+Are you sure you want to continue? [y/N] y
+Deleted Networks:
+avbr1
+titobridge
+jeribridge
+dharambr1
+ashubr1
+ravibr1
+gowtham
+shankybridge
+balaji
+prinet1
+avij1
+kiran
+
+❯ docker  network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+8aaffe198eaa   bridge    bridge    local
+aecb53e7d2c2   host      host      local
+97232a13bf47   none      null      local
+
+```
+
+# Storage in Docker 
+
+## type 
+
+<img src="st.png">
+
+### steps for Storage Engineer
+
+```
+[root@ip-172-31-86-132 docker]# lsblk 
+NAME          MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+nvme0n1       259:0    0  59G  0 disk 
+|-nvme0n1p1   259:1    0  59G  0 part /
+`-nvme0n1p128 259:2    0   1M  0 part 
+[root@ip-172-31-86-132 docker]# lsblk 
+NAME          MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+nvme0n1       259:0    0   59G  0 disk 
+|-nvme0n1p1   259:1    0   59G  0 part /
+`-nvme0n1p128 259:2    0    1M  0 part 
+nvme1n1       259:3    0  100G  0 disk 
+[root@ip-172-31-86-132 docker]# mkfs.xfs   /dev/nvme1n1 
+meta-data=/dev/nvme1n1           isize=512    agcount=4, agsize=6553600 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=0
+data     =                       bsize=4096   blocks=26214400, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal log           bsize=4096   blocks=12800, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+[root@ip-172-31-86-132 docker]# mkdir  /oracleDE 
+[root@ip-172-31-86-132 docker]# mount  /dev/nvme1n1  /oracleDE/
+[root@ip-172-31-86-132 docker]# vim /etc/fstab 
+[root@ip-172-31-86-132 docker]# mount -a
+
+
+```
+
+### Steps for Docker engineer 
+
+```
+[root@ip-172-31-86-132 oracleDE]# cd  /etc/sysconfig/
+[root@ip-172-31-86-132 sysconfig]# ls
+acpid       clock     docker          init        modules          nfs            rpc-rquotad  run-parts  sysstat.ioconf
+atd         console   docker-storage  irqbalance  netconsole       raid-check     rpcbind      selinux
+authconfig  cpupower  grub            keyboard    network          rdisc          rsyncd       sshd
+chronyd     crond     i18n            man-db      network-scripts  readonly-root  rsyslog      sysstat
+[root@ip-172-31-86-132 sysconfig]# 
+[root@ip-172-31-86-132 sysconfig]# vim docker
+[root@ip-172-31-86-132 sysconfig]# systemctl daemon-reload 
+[root@ip-172-31-86-132 sysconfig]# systemctl restart docker 
+
+
+===
+[root@ip-172-31-86-132 sysconfig]# cat docker
+# The max number of open files for the daemon itself, and all
+# running containers.  The default value of 1048576 mirrors the value
+# used by the systemd service unit.
+DAEMON_MAXFILES=1048576
+
+# Additional startup options for the Docker daemon, for example:
+# OPTIONS="--ip-forward=true --iptables=true"
+# By default we limit the number of open files per container
+OPTIONS="--default-ulimit nofile=1024:4096 -H tcp://0.0.0.0:2375 -g  /oracleDE"
+
+# How many seconds the sysvinit script waits for the pidfile to appear
+# when starting the daemon.
+
+```
+
+## TO sync data from old location to New location 
+
+```
+ rsync  -avp  /var/lib/docker/   /oracleDE/ 
+ 
+ systemctl restart docker
+ 
+ ```
+ 
+ 
