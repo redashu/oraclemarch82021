@@ -511,4 +511,113 @@ OPTIONS="--default-ulimit nofile=1024:4096 -H tcp://0.0.0.0:2375 -g  /oracleDE"
  
  ```
  
+ ## COntainer Storage 
+ 
+ ### creating volume 
+ 
+ ```
+ ❯ docker  volume  create  helloashu
+helloashu
+❯ docker  volume  ls
+DRIVER    VOLUME NAME
+local     87fc334060fc75461391b7b563480b7df9bc24df50ee49c02a10f9c527303379
+local     afe1fbe440ccdfe0998c54995fe95f0a6055018b9ffc36bc33018d1664f8506b
+local     helloashu
+❯ docker  volume  ls
+DRIVER    VOLUME NAME
+local     87fc334060fc75461391b7b563480b7df9bc24df50ee49c02a10f9c527303379
+local     afe1fbe440ccdfe0998c54995fe95f0a6055018b9ffc36bc33018d1664f8506b
+local     dharamvol
+local     helloashu
+
+
+```
+
+## volume using docker 
+
+```
+10187  docker  volume  create  helloashu
+10188  docker  volume  ls
+10189  history
+10190  docker rm  x2 
+10191  docker  run  --name x1  -it -v  helloashu:/mybackup:ro   oraclelinux:8.3  bash 
+10192  docker  run  --name x11   -it -v  helloashu:/mybackup:ro   oraclelinux:8.3  bash 
+❯ docker  run  -it  --rm  -v  helloashu:/kk:ro   alpine sh
+/ # cd  /kk/
+/kk # ls
+hello  is     me     this   world
+/kk # mkdir fine
+mkdir: can't create directory 'fine': Read-only file system
+/kk # rmdir hello
+rmdir: 'hello': Read-only file system
+/kk # 
+❯ docker  run  -it  --rm  -v  helloashu:/kk   alpine sh
+/ # cd  /kk/
+/kk # ls
+hello  is     me     this   world
+/kk # mkdir fine 
+/kk # rmdir hello/
+
+```
+
+### where volume store data : --- Server Side 
+
+```
+❯ docker  volume  inspect  helloashu
+[
+    {
+        "CreatedAt": "2021-03-09T11:01:06Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/oracleDE/volumes/helloashu/_data",
+        "Name": "helloashu",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+```
+
+## on the server machine 
+
+```
+[root@ip-172-31-86-132 oracleDE]# cd  /oracleDE/volumes/
+[root@ip-172-31-86-132 volumes]# ls
+57840986cfbd5eb81c2345db9908143e58e5d59e57d2474a0e48f15cf649525c  dharamvol    hellodocker  titovol1
+87fc334060fc75461391b7b563480b7df9bc24df50ee49c02a10f9c527303379  gowthamVol   hellovolume
+afe1fbe440ccdfe0998c54995fe95f0a6055018b9ffc36bc33018d1664f8506b  helloashu    metadata.db
+bf9fd93b70e0d2f864f12ca56bb23677639a621944b3681a90fc746c59a3f4ef  hellobalaji  shankyVol
+[root@ip-172-31-86-132 volumes]# cd  helloashu/
+[root@ip-172-31-86-132 helloashu]# ls
+_data
+[root@ip-172-31-86-132 helloashu]# cd  _data/
+[root@ip-172-31-86-132 _data]# ls
+fine  is  me  this  world
+[root@ip-172-31-86-132 _data]# 
+
+```
+
+### Mounting a particular file / Directory as Volume in Container 
+
+```
+❯ docker  run  -it  --rm  -v  /etc/hosts:/aa.txt   alpine sh
+/ # 
+/ # cat  aa.txt 
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+/ # 
+❯ docker  run  -it  --rm  -v  /etc:/myhostetc:ro    alpine sh
+/ # cd  /myhostetc/
+/myhostetc # ls
+DIR_COLORS               depmod.d                 krb5.conf                pki                      setuptool.d
+DIR_COLORS.256color      dhcp                     krb5.conf.d              plymouth                 shadow
+DIR_COLORS.lightbgcolor  docker                   ld.so.cache              pm                       shadow-
+GREP_COLORS              docker-runtimes.d        ld.so.conf               popt.d                   shells
+GeoIP.conf               dracut.conf              ld.so.conf.d             postfix                  skel
+GeoIP.conf.default       dracut.conf.d            libaudit.conf            ppp                      ssh
+NetworkManager           e2fsck.conf           
+
+```
+
+
  
