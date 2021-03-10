@@ -1,0 +1,11 @@
+apiVersion: v1 # to handle pod k8s apiserver is having v1 as version
+kind: Pod # for which resource we are requesting 
+metadata: # info about my POD 
+ name: ashupod-1  # name of the Pod 
+spec: # here will write about application 
+ containers:
+ - image: dockerashu/ashutomcat:v1 # image from Docker hub 
+   name: ashuc1  # container
+   ports:
+   - containerPort: 8080 # tomcat app port number 
+ 
