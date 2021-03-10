@@ -94,3 +94,55 @@ Removing network ashujavawebapp_default
 
 ```
 
+## Just docker is not good for production grade app deployment 
+
+<img src="reason.png">
+
+## CRE clustering and container orchestration 
+
+<img src="orch.png">
+
+
+## Info about Kubernetes 
+
+<img src="info.png">
+
+
+# Kubernetes architecture  
+
+## Level 1 
+
+<img src="k8sarch1.png">
+
+## level 2 -- kube-apiserver
+
+<img src="apis.png">
+
+## Level 3 -- kube-schedular 
+
+<img src="ksch.png">
+
+## level 4 -- replication controller 
+
+<img src="rc.png">
+
+
+## Level 5 - ECTD 
+
+<img src="etcd.png">
+
+## Minion Side there will be a distributed bridge for container ips 
+
+<img src="br.png">
+
+## kube proxy 
+
+<img src="kprox.png">
+
+## COntainer networking strategy
+
+
+<img src="cnet.png">
+
+
+
