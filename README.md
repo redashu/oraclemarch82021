@@ -47,3 +47,50 @@ Removing ashuc1 ... done
 Removing network ashuexample1_default
 
 ```
+
+### example 2
+
+```
+❯ cd ashujavawebapp
+
+░▒▓ ~/Desktop/myimages/ashujavawebapp  master !1 ?1 ···························································· 11:33:43 AM ▓▒░─╮
+❯                                                                                                                                  ─╯
+❯ ls
+Dockerfile         README.md          docker-compose.yml myapp
+❯ docker-compose up -d
+Creating network "ashujavawebapp_default" with the default driver
+Creating ashuccc1 ... done
+Creating ashucc11 ... done
+❯ docker-compose  ps
+  Name         Command       State           Ports         
+-----------------------------------------------------------
+ashucc11   catalina.sh run   Up      0.0.0.0:1133->8080/tcp
+ashuccc1   ping 127.0.0.1    Up                            
+❯ docker-compose kill  ashuapp22
+Killing ashuccc1 ... done
+❯ docker-compose ps
+  Name         Command        State             Ports         
+--------------------------------------------------------------
+ashucc11   catalina.sh run   Up         0.0.0.0:1133->8080/tcp
+ashuccc1   ping 127.0.0.1    Exit 137                         
+❯ docker-compose  start
+Starting ashujavaapp ... done
+Starting ashuapp22   ... done
+❯ docker-compose ps
+  Name         Command       State           Ports         
+-----------------------------------------------------------
+ashucc11   catalina.sh run   Up      0.0.0.0:1133->8080/tcp
+ashuccc1   ping 127.0.0.1    Up                            
+❯ docker-compose kill
+Killing ashucc11 ... done
+Killing ashuccc1 ... done
+❯ docker-compose rm
+Going to remove ashucc11, ashuccc1
+Are you sure? [yN] y
+Removing ashucc11 ... done
+Removing ashuccc1 ... done
+❯ docker-compose down
+Removing network ashujavawebapp_default
+
+```
+
