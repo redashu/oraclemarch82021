@@ -399,5 +399,271 @@ minion-node2   Ready    <none>                 3m56s   v1.20.4
 
 ```
 
+## checking connection with k8s cluster 
+
+### Minikube one that is default 
+
+```
+❯ kubectl get  nodes
+NAME       STATUS   ROLES                  AGE   VERSION
+minikube   Ready    control-plane,master   51m   v1.20.2
+❯ 
+
+```
+
+### Remote cluster 
+```
+
+❯ kubectl get  nodes  --kubeconfig  /Users/fire/Desktop/admin.conf
+NAME           STATUS   ROLES                  AGE   VERSION
+master-node    Ready    control-plane,master   12m   v1.20.4
+minion-node1   Ready    <none>                 11m   v1.20.4
+minion-node2   Ready    <none>                 11m   v1.20.4
+
+```
+
+## setting default cluster 
+
+```
+❯ export KUBECONFIG="/Users/fire/Desktop/admin.conf"
+❯ 
+❯ kubectl get  nodes
+NAME           STATUS   ROLES                  AGE   VERSION
+master-node    Ready    control-plane,master   14m   v1.20.4
+minion-node1   Ready    <none>                 13m   v1.20.4
+minion-node2   Ready    <none>                 13m   v1.20.4
+❯ 
+❯ minikube stop
+✋  Stopping node "minikube"  ...
+🛑  Powering off "minikube" via SSH ...
+
+
+```
+
+### From windows powershell 
+
+```
+$env:KUBECONFIG="C:\Users\ashu\Desktop\admin.conf"    
+
+```
+
+## APp deploy
+
+<img src="appm.png">
+
+###. Container vs pods 
+
+<img src="pod.png">
+
+### CLose look to POD
+
+<img src="pod1.png">
+
+# POd
+
+## first Pod deployment 
+
+```
+❯ ls
+pod1.yaml
+❯ kubectl   apply  -f   pod1.yaml   --dry-run=client
+pod/ashupod-1 created (dry run)
+❯ kubectl   apply  -f   pod1.yaml
+pod/ashupod-1 created
+❯ kubectl   get  pods
+NAME        READY   STATUS              RESTARTS   AGE
+ashupod-1   0/1     ContainerCreating   0          13s
+❯ kubectl   get  pods
+NAME        READY   STATUS    RESTARTS   AGE
+ashupod-1   1/1     Running   0          32s
+ravipod-1   1/1     Running   0          3s
+
+```
+
+## checking where kube-schedular scheduled pods
+
+```
+❯ kubectl   get  pods -o wide
+NAME          READY   STATUS    RESTARTS   AGE     IP              NODE           NOMINATED NODE   READINESS GATES
+ashupod-1     1/1     Running   0          3m2s    192.168.3.66    minion-node1   <none>           <none>
+avijitpod-1   1/1     Running   0          2m15s   192.168.100.3   minion-node2   <none>           <none>
+avpod-1       1/1     Running   0          13s     192.168.100.6   minion-node2   <none>           <none>
+balajipod-1   1/1     Running   0          2m21s   192.168.3.68    minion-node1   <none>           <none>
+dharampod-1   1/1     Running   0          106s    192.168.100.5   minion-node2   <none>           <none>
+jeripod-1     1/1     Running   0          2m3s    192.168.100.4   minion-node2   <none>           <none>
+ravipod-1     1/1     Running   0          2m33s   192.168.3.67    minion-node1   <none>           <none>
+titopod-1     1/1     Running   0          2m16s   192.168.3.69    minion-node1   <none>           <none>
+
+```
+
+OR 
+
+```
+❯ kubectl   get  pods ashupod-1   -o wide
+NAME        READY   STATUS    RESTARTS   AGE     IP             NODE           NOMINATED NODE   READINESS GATES
+ashupod-1   1/1     Running   0          3m52s   192.168.3.66   minion-node1   <none>           <none>
+❯ 
+
+
+```
+
+### Checking more info about POD 
+
+```
+❯ kubectl  describe pod  ashupod-1
+Name:         ashupod-1
+Namespace:    default
+Priority:     0
+Node:         minion-node1/172.31.90.255
+Start Time:   Wed, 10 Mar 2021 16:36:29 +0530
+Labels:       <none>
+Annotations:  cni.projectcalico.org/podIP: 192.168.3.66/32
+              cni.projectcalico.org/podIPs: 192.168.3.66/32
+Status:       Running
+IP:           192.168.3.66
+IPs:
+  IP:  192.168.3.66
+Containers:
+  ashuc1:
+    Container ID:   docker://655f1e9f806d43e03b2ce3a65d0dee77e30d59486e7e8710e87ff3159dc36b67
+    Image:          dockerashu/ashutomcat:v1
+    Image ID:       docker-pullable://dockerashu/ashutomcat@sha256:87107b57ef60a16417a66f42ab4a94da49057215d252bfcdc2fd207a1173177c
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 10 Mar 2021 16:36:44 +0530
+    Ready:          True
+    Restart Count:  0
+
+```
+
+### access pod from client system 
+
+```
+❯ kubectl  exec -it  ashupod-1  -- bash
+root@ashupod-1:/usr/local/tomcat/webapps/ashuapp# 
+root@ashupod-1:/usr/local/tomcat/webapps/ashuapp# 
+root@ashupod-1:/usr/local/tomcat/webapps/ashuapp# cat  /etc/os-release 
+PRETTY_NAME="Debian GNU/Linux 10 (buster)"
+NAME="Debian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+root@ashupod-1:/usr/local/tomcat/webapps/ashuapp# exit
+exit
+
+```
+
+## to access application from Client machine 
+
+```
+❯ kubectl port-forward   ashupod-1   1122:8080
+Forwarding from 127.0.0.1:1122 -> 8080
+Forwarding from [::1]:1122 -> 8080
+Handling connection for 1122
+Handling connection for 1122
+
+
+```
+
+### Deleting pods
+
+```
+❯ kubectl delete  pod  ashupod-1
+pod "ashupod-1" deleted
+❯ kubectl delete  pod  --all
+pod "avijitpod-1" deleted
+pod "avpod-1" deleted
+pod "avpodjava-1" deleted
+pod "balajipod-1" deleted
+pod "dharampod-1" deleted
+pod "gowthampod-1" deleted
+pod "jeripod-1" deleted
+
+```
+
+## auto generate yaml 
+
+```
+ kubectl  run  ashupod2  --image=nginx  --port 80  --dry-run=client  -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod2
+  name: ashupod2
+spec:
+  containers:
+  - image: nginx
+    name: ashupod2
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+❯ kubectl  run  ashupod2  --image=nginx  --port 80  --dry-run=client  -o yaml   >autopod.yaml
+
+```
+
+## Day3 History of k8s
+
+```
+10002  kubectl get  nodes  --kubeconfig  /Users/fire/Desktop/admin.conf 
+10003  export KUBECONFIG="/Users/fire/Desktop/admin.conf"
+10004  kubectl get  nodes  
+10005  minikube stop 
+10006  minikube status
+10007  history
+10008  kubectl  get  nodes
+10009  history
+10010  kubectl  get  nodes
+10011  history
+10012  cd  Desktop/oraclemarch82021/k8sapps
+10013  ls
+10014  kubectl   apply  -f   pod1.yaml   --dry-run=client 
+10015  kubectl   apply  -f   pod1.yaml  
+10016  kubectl   get  pods
+10017  kubectl  describe pod avijitpod-1 
+10018  history
+10019  kubectl   get  pods
+10020  kubectl  get  nodes
+10021  kubectl   get  pods
+10022  kubectl   get  pods -o wide
+10023  kubectl   get  pods ashupod-1   -o wide
+10024  history
+10025  kubectl   get  pods
+10026  kubectl  describe pod  ashupod-1 
+10027  history
+10028  kubectl get  po 
+10029  kubectl  exec -it  ashupod-1  -- bash 
+10030  history
+10031  kubectl get  po 
+10032  kubectl  exec -it  ashupod-1  -- bash 
+10033  history
+10034  kubectl get po ashupod-1  -o wide
+10035  kubectl port-forward   ashupod1   1122:8080 
+10036  kubectl port-forward   ashupod-11   1122:8080 
+10037  kubectl port-forward   ashupod-1   1122:8080 
+10038  history
+10039  kubectl get po
+10040  kubectl delete  pod  ashupod-1 
+10041  kubectl delete  pod  --all
+10042  history
+10043  kubectl  get  pods
+10044  kubectl  run  ashupod2  --image=nginx  --port 80  --dry-run=client  -o yaml 
+10045  kubectl  run  ashupod2  --image=nginx  --port 80  --dry-run=client  -o yaml   >autopod.yaml
+10046  ls
+10047  kubectl apply -f  autopod.yaml
+10048  kubectl get po 
+10049  kubectl  version --client 
+
+
+```
 
 
