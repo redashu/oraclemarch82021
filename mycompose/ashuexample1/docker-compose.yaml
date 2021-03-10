@@ -1,0 +1,11 @@
+version: '3.8'
+services:  # to define one or More applications 
+ ashuapp1: # name of application 
+  image: alpine
+  container_name: ashuc1
+  command: ping fb.com
+
+#networks: i can skip that and even if you don't  create then from file version 2
+# automatically a new network will be created for each compose file
+# that network name will include your directory name so you have create a unique dir
+#volume:  i can skip that bcz i am not using 

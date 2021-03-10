@@ -1,0 +1,19 @@
+version: '3.8'
+networks:
+ ashubr11: # name of network 
+services:
+  ashujavaapp: # first app name 
+    image: ashuweb:javav1 # image i want to build
+    build: . # location of dockerfile
+    container_name: ashucc11 
+    networks:
+     - ashubr11 
+    ports:
+      - "1133:8080"
+  ashuapp22: # second app name 
+    image: alpine
+    container_name: ashuccc1
+    command: ping 127.0.0.1 
+    network:
+     - ashubr11 
+
