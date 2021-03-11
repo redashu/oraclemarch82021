@@ -258,6 +258,97 @@ ashudep1-5bd796f4d8-25jd6   1/1     Running   0          65s
 
 ```
 
+## scaling deployment 
+
+```
+❯ kubectl  scale deployment ashudep1 --replicas=3
+deployment.apps/ashudep1 scaled
+❯ 
+❯ kubectl  get  deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashudep1   3/3     3            3           9m21s
+❯ 
+❯ kubectl  get  po
+NAME                        READY   STATUS    RESTARTS   AGE
+ashudep1-5bd796f4d8-25jd6   1/1     Running   0          10m
+ashudep1-5bd796f4d8-kksts   1/1     Running   0          44s
+ashudep1-5bd796f4d8-pstz4   1/1     Running   0          44s
+❯ kubectl  get  po  -o wide
+NAME                        READY   STATUS    RESTARTS   AGE   IP              NODE           NOMINATED NODE   READINESS GATES
+ashudep1-5bd796f4d8-25jd6   1/1     Running   0          10m   192.168.3.118   minion-node1   <none>           <none>
+ashudep1-5bd796f4d8-kksts   1/1     Running   0          48s   192.168.100.5   minion-node2   <none>           <none>
+ashudep1-5bd796f4d8-pstz4   1/1     Running   0          48s   192.168.3.117   minion-node1   <none>           <none>
+
+
+
+```
+
+## checking revesion number of deployment 
+
+```
+❯ kubectl  describe  deployment  ashudep1
+Name:                   ashudep1
+Namespace:              m-space
+CreationTimestamp:      Thu, 11 Mar 2021 16:25:30 +0530
+Labels:                 app=ashudep1
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=ashudep1
+Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=ashudep1
+  Containers:
+   oraclewebapp:
+    Image:      dockerashu/oraclewebapp:v001
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Environment:
+      customer:  app2
+    Mounts:      <none>
+  Volumes:       <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   ashudep1-5bd796f4d8 (3/3 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  11m    deployment-controller  Scaled up replica set ashudep1-5bd796f4d8 to 1
+  Normal  ScalingReplicaSet  2m25s  deployment-controller  Scaled up replica set ashudep1-5bd796f4d8 to 3
+  
+```
+
+## more commands 
+
+```
+0  kubectl  scale deployment ashudep1 --replicas=3
+10221  kubectl  get  deploy 
+10222  kubectl  get  po 
+10223  kubectl  get  po  -o wide
+10224  kubectl  describe  deployment  ashudep1  
+10225  history
+10226  ls
+10227  cd ..
+10228  ls
+10229  cd  ..
+10230  cd  oraclemarch82021/k8sapps/multiapp
+10231  ls
+10232  docker build  -t  dockerashu/oraclewebapp:v002
+10233  docker build  -t  dockerashu/oraclewebapp:v002 .
+10234  docker push dockerashu/oraclewebapp:v002 
+10235  history
+10236  kubectl  describe  deployment  ashudep1  
+10237  kubectl  set  image  deployment  ashudep1  oraclewebapp=dockerashu/oraclewebapp:v002 
+10238  history
+10239  kubectl  describe  deployment  ashudep1  
+
+```
+
 
 
 
