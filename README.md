@@ -221,6 +221,14 @@ m-space           Active   11s
 
 ```
 
+# Introduction to deployment 
+
+<img src="dep.png">
+
+## reality of deployment 
+
+<img src="depreal.png">
+
 
 
 
