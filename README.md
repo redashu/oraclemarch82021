@@ -229,6 +229,35 @@ m-space           Active   11s
 
 <img src="depreal.png">
 
+## dealing with deployment 
+
+```
+10208  kubectl apply -f  mydep.yml
+10209  kubectl  get deploy 
+10210  kubectl  get svc
+10211  kubectl  get deployments
+❯ 
+❯ 
+❯ kubectl  get  deploy,svc
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/ashudep1   1/1     1            1           49s
+
+NAME               TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+service/ashusvc1   NodePort   10.96.29.12   <none>        1234:32544/TCP   48s
+❯ 
+❯ 
+❯ kubectl   get  deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashudep1   1/1     1            1           57s
+❯ kubectl   get  rs
+NAME                  DESIRED   CURRENT   READY   AGE
+ashudep1-5bd796f4d8   1         1         1       62s
+❯ kubectl   get  pod
+NAME                        READY   STATUS    RESTARTS   AGE
+ashudep1-5bd796f4d8-25jd6   1/1     Running   0          65s
+
+```
+
 
 
 
