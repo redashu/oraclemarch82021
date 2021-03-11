@@ -3,11 +3,11 @@ kind: ReplicationController
 metadata:
  name: ashurc-123 
 spec: 
- replicas: 1 # number of pod initially you want 
+ replicas: 3 # number of pod initially you want 
  template: # RC will use template to create POD
   metadata:
    labels: # all the POD will have this label 
-    x1: hello1ashu
+    x1: hello1ashu 
   spec:
    containers:
    - image: dockerashu/oraclewebapp:v001 
