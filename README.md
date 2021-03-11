@@ -139,5 +139,11 @@ pod "titopod-1" deleted
 
 ```
 
+# Replication Controller 
+
+<img src="rc.png">
+
+
+
 
 
