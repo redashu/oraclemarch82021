@@ -144,6 +144,83 @@ pod "titopod-1" deleted
 <img src="rc.png">
 
 
+## creating service by Expose 
+
+```
+kubectl   expose   rc  ashurc-123  --type  NodePort  --port 1234 --target-port 80 --name x1svc 
+
+```
+
+### scaling pod using scale commnad 
+
+```
+10123  kubectl  scale  rc  ashurc-123  --replicas=5
+10124  kubectl  get  po 
+10125  kubectl  scale  rc  ashurc-123  --replicas=1
+```
+
+# Namespaces 
+
+<img src="ns.png">
+
+### checking default namespaces
+
+```
+❯ kubectl   get   namespace
+NAME              STATUS   AGE
+default           Active   23h
+kube-node-lease   Active   23h
+kube-public       Active   23h
+kube-system       Active   23h
+❯ kubectl   get   ns
+NAME              STATUS   AGE
+default           Active   23h
+kube-node-lease   Active   23h
+kube-public       Active   23h
+kube-system       Active   23h
+
+```
+
+## two different & useful namespaces
+
+<img src="ns1.png">
+
+```
+❯ kubectl get  po   -n kube-system
+NAME                                       READY   STATUS    RESTARTS   AGE
+calico-kube-controllers-6949477b58-ttcjb   1/1     Running   1          23h
+calico-node-4t9q7                          1/1     Running   1          23h
+calico-node-52clk                          1/1     Running   1          23h
+calico-node-9w5jr                          1/1     Running   1          23h
+coredns-74ff55c5b-mdqsn                    1/1     Running   1          23h
+coredns-74ff55c5b-v6cwf                    1/1     Running   1          23h
+etcd-master-node                           1/1     Running   1          23h
+kube-apiserver-master-node                 1/1     Running   2          23h
+kube-controller-manager-master-node        1/1     Running   1          23h
+kube-proxy-5jvkd                           1/1     Running   1          23h
+kube-proxy-lqxh5                           1/1     Running   1          23h
+kube-proxy-mf7zr                           1/1     Running   1          23h
+kube-scheduler-master-node                 1/1     Running   1          23h
+
+```
+
+### creating custom namespace 
+
+```
+❯ kubectl  create  namespace  m-space
+namespace/m-space created
+❯ 
+❯ kubectl get  ns
+NAME              STATUS   AGE
+balaji-space      Active   5s
+default           Active   23h
+kube-node-lease   Active   23h
+kube-public       Active   23h
+kube-system       Active   23h
+m-space           Active   11s
+
+```
+
 
 
 
