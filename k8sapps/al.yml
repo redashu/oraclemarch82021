@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: m-space 
+  creationTimestamp: null
+  labels:
+    run: me1
+  name: me1
+spec:
+  containers:
+  - image: alpine
+    name: me1
+    command: ["/bin/sh","-c","ping fb.com"] # this is default process now  
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: m-space # my name space 
+  creationTimestamp: null
+  labels:
+    app: ashuwebapp
+  name: ashuwebapp
+spec:
+  replicas: 1 # single POD only 
+  selector:
+    matchLabels:
+      app: ashuwebapp
+  strategy: {}
+  template: # template will be used to create multiple pods 
+    metadata:
+      creationTimestamp: null
+      labels: # label of PODS 
+        app: ashuwebapp
+    spec:
+      containers:
+      - image: dockerashu/mywebapp:v1 # image from Dockerhub 
+        name: mywebapp # name of container 
+        resources: {}
+status: {}

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashusvc1
+  name: ashusvc1  # name of service 
+spec:
+  ports: # creating port and ip combo 
+  - name: 1234-8080
+    port: 1234  # service POrt number 
+    protocol: TCP
+    targetPort: 80 # pod port where app is running 
+    nodePort: 30161 # 30000-32767
+  selector: # this is the one who is going to find Pod using below labels 
+    x1: hello1ashu # here exactly same label as POD
+  type: NodePort # type of service 
+status:
+  loadBalancer: {}

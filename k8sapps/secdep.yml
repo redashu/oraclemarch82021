@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: dd1
+  name: dd1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dd1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: dd1
+    spec:
+      imagePullSecrets: # calling secret 
+      - name: myimgsec # name of secret 
+      containers:
+      - image: oracleteam.azurecr.io/mywebapp:v1
+        name: mywebapp
+        resources: {}
+status: {}
