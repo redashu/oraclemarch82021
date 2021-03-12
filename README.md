@@ -136,6 +136,39 @@ mysvc1   NodePort   10.98.180.212   <none>        1234:31396/TCP   38s
 
 ```
 
+## scaling pods using deployment 
+
+```
+❯ kubectl  get   all  -n m-space
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/ashuwebapp-5fd4f7dd5c-lns7s   1/1     Running   0          45m
+
+NAME             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/mysvc1   NodePort   10.98.180.212   <none>        1234:31396/TCP   38m
+
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/ashuwebapp   1/1     1            1           46m
+
+NAME                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/ashuwebapp-5fd4f7dd5c   1         1         1       46m
+❯ kubectl  get   po  -n m-space
+NAME                          READY   STATUS    RESTARTS   AGE
+ashuwebapp-5fd4f7dd5c-lns7s   1/1     Running   0          47m
+❯ kubectl scale  deploy ashuwebapp --replicas=3  -n m-space
+deployment.apps/ashuwebapp scaled
+❯ 
+❯ kubectl  get   po  -n m-space
+NAME                          READY   STATUS    RESTARTS   AGE
+ashuwebapp-5fd4f7dd5c-6v7hk   1/1     Running   0          3s
+ashuwebapp-5fd4f7dd5c-jxmwb   1/1     Running   0          3s
+ashuwebapp-5fd4f7dd5c-lns7s   1/1     Running   0          47m
+
+```
+
+## End user respected deployment 
+
+<img src="eup.png">
+
 
 
 
