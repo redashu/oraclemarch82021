@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: m-space 
+  creationTimestamp: null
+  labels:
+    run: hello1pod
+  name: hello1pod # name of POD 
+spec:
+  nodeName: minion-node1 # static scheduling 
+  volumes: # volume will take /etc data from Node1 
+  - name: ashuvolx1
+    hostPath:
+     path: /etc
+     type: Directory
+  containers:
+  - image: alpine
+    imagePullPolicy: IfNotPresent # to avoid image pull limit
+    name: hello1pod
+    command: ["/bin/sh","-c","sleep 36000"]
+    volumeMounts:
+    - name: ashuvolx1
+      mountPath: /myetc # this directory will be created 
+      readOnly: True
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: m-space 
+  creationTimestamp: null
+  labels:
+    app: webui
+  name: webui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webui
+  strategy: {}
+  template: # entire Pod section
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: webui
+    spec:
+      volumes:
+      - name: ashuvolx2
+        hostPath:
+         path: /var/run/docker.sock
+         type: Socket
+      containers:
+      - image: portainer/portainer
+        name: portainer
+        volumeMounts:
+        - name: ashuvolx2
+          mountPath: /var/run/docker.sock 
+        ports:
+        - containerPort: 9000
+        resources: {}
+status: {}
