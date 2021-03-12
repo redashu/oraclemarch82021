@@ -436,6 +436,121 @@ secret/ashusec1 created
 ```
 
 
+ ## deployment of DB 
+ 
+ ```
+ ❯ kubectl  apply -f  mysqldb.yml
+deployment.apps/dbdep created
+❯ kubectl  get  deploy -n m-space
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+dbdep   1/1     1            1           7s
+❯ kubectl  get po  -n m-space
+NAME                    READY   STATUS    RESTARTS   AGE
+dbdep-f7cbb8745-tx2ds   1/1     Running   0          18s
+❯ kubectl logs -f dbdep-f7cbb8745-tx2ds   -n m-space
+2021-03-12 11:17:14+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.23-1debian10 started.
+2021-03-12 11:17:14+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+2021-03-12 11:17:14+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.23-1debian10 started.
+2021-03-12 11:17:14+00:00 [Note] [Entrypoint]: Initializing database files
+2021-03-12T11:17:14.920498Z 0 [Warning] [MY-010139] [Server] Changed limits: max_open_files: 1024 (requested 8161)
+2021-03-12T11:17:14.920502Z 0 [Warning] [MY-010142] [Server] Changed limits: table_open_cache: 431 (requested 4000)
+2021-03-12T11:17:14.920913Z 0 [System] [MY-013169] [Server] /usr
+
+```
+
+
+## Dash board deployment in k8s
+
+```
+ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+namespace/kubernetes-dashboard created
+serviceaccount/kubernetes-dashboard created
+service/kubernetes-dashboard created
+secret/kubernetes-dashboard-certs created
+secret/kubernetes-dashboard-csrf created
+secret/kubernetes-dashboard-key-holder created
+configmap/kubernetes-dashboard-settings created
+role.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+clus
+
+```
+
+[dashboard link](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+
+## more closure look 
+
+```
+❯ kubectl  get all -n kubernetes-dashboard
+NAME                                             READY   STATUS    RESTARTS   AGE
+pod/dashboard-metrics-scraper-7b59f7d4df-j898p   1/1     Running   0          58s
+pod/kubernetes-dashboard-74d688b6bc-jzxlx        1/1     Running   0          59s
+
+NAME                                TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/dashboard-metrics-scraper   ClusterIP   10.109.75.95   <none>        8000/TCP   60s
+service/kubernetes-dashboard        ClusterIP   10.108.149.4   <none>        443/TCP    66s
+
+NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/dashboard-metrics-scraper   1/1     1            1           59s
+deployment.apps/kubernetes-dashboard        1/1     1            1           60s
+
+NAME                                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/dashboard-metrics-scraper-7b59f7d4df   1         1         1       59s
+replicaset.apps/kubernetes-dashboard-74d688b6bc        1         1         1       60s
+❯ kubectl  get po  -n kubernetes-dashboard
+NAME                                         READY   STATUS    RESTARTS   AGE
+dashboard-metrics-scraper-7b59f7d4df-j898p   1/1     Running   0          87s
+kubernetes-dashboard-74d688b6bc-jzxlx        1/1     Running   0          88s
+❯ kubectl  get svc  -n kubernetes-dashboard
+NAME                        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+dashboard-metrics-scraper   ClusterIP   10.109.75.95   <none>        8000/TCP   94s
+kubernetes-dashboard        ClusterIP   10.108.149.4   <none>        443/TCP    100s
+
+```
+
+## Edit service 
+
+```
+❯ kubectl  get svc  -n kubernetes-dashboard
+NAME                        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+dashboard-metrics-scraper   ClusterIP   10.109.75.95   <none>        8000/TCP   94s
+kubernetes-dashboard        ClusterIP   10.108.149.4   <none>        443/TCP    100s
+❯ kubectl  edit  svc  kubernetes-dashboard   -n kubernetes-dashboard
+service/kubernetes-dashboard edited
+❯ kubectl  get svc  -n kubernetes-dashboard
+NAME                        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)         AGE
+dashboard-metrics-scraper   ClusterIP   10.109.75.95   <none>        8000/TCP        3m39s
+kubernetes-dashboard        NodePort    10.108.149.4   <none>        443:32376/TCP   3m45s
+
+```
+### get secret to login 
+
+```
+❯ kubectl  get  secret  -n kubernetes-dashboard
+NAME                               TYPE                                  DATA   AGE
+default-token-48qcm                kubernetes.io/service-account-token   3      6m57s
+kubernetes-dashboard-certs         Opaque                                0      6m55s
+kubernetes-dashboard-csrf          Opaque                                1      6m55s
+kubernetes-dashboard-key-holder    Opaque                                2      6m54s
+kubernetes-dashboard-token-6stlk   kubernetes.io/service-account-token   3      6m57s
+❯ kubectl  describe   secret kubernetes-dashboard-token-6stlk  -n kubernetes-dashboard
+Name:         kubernetes-dashboard-token-6stlk
+Namespace:    kubernetes-dashboard
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name: kubernetes-dashboard
+              kubernetes.io/service-account.uid: 5ef93a5a-68f8-428f-b433-5d485277c490
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1066 bytes
+namespace:  20 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6InphYXhheVV1el9GUHZsTS02Y3pOMVJIUy1DdXJCRGdqSUlOcXotNjQwNm8ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZC10
+
+```
+
 
 
 
