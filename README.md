@@ -169,6 +169,67 @@ ashuwebapp-5fd4f7dd5c-lns7s   1/1     Running   0          47m
 
 <img src="eup.png">
 
+## rebuild and update
+
+```
+10090  kubectl autoscale deployment ashuwebapp  --min=3 --max=50  --cpu-percent=70 -n m-space 
+10091  kubectl get deploy -n m-space 
+10092  kubectl get svc  -n m-space 
+10093  kubectl expose deployment ashuwebapp  --type LoadBalancer --port 1234 --target-port 80 --name lbsvc1   -n m-space 
+10094  kubectl get svc  -n m-space 
+10095  history
+10096  docker push dockerashu/mywebapp:v2
+10097  history
+10098  kubectl   describe  deploy  ashuwebapp  -n m-space 
+10099  kubectl  set image  deployment  ashuwebapp  mywebapp=dockerashu/mywebapp:v2  -n m-space 
+10100  history
+10101  kubectl   describe  deploy  ashuwebapp  -n m-space 
+10102  history
+10103  kubectl  rollout history  deployment ashuwebapp  -n m-space  
+10104  kubectl   describe  deploy  ashuwebapp  -n m-space 
+
+```
+
+## TO deploy application from Private docker registry 
+
+### ACR image to deploy in k8s 
+
+```
+❯ kubectl  create  deployment  dd1  --image=oracleteam.azurecr.io/mywebapp:v1  --dry-run=client -o yaml >secdep.yml
+❯ 
+❯ kubectl  apply -f  secdep.yml -n m-space
+deployment.apps/dd1 created
+❯ 
+❯ kubectl  get deploy  -n m-space
+NAME   READY   UP-TO-DATE   AVAILABLE   AGE
+dd1    0/1     1            0           12s
+❯ kubectl  get po  -n m-space
+NAME                   READY   STATUS             RESTARTS   AGE
+dd1-6ccd64c55b-vk462   0/1     ImagePullBackOff   0          20s
+
+
+
+```
+
+## Welcome to Secret 
+
+<img src="secimg.png">
+
+## Introducing image secret 
+
+```
+10114  kubectl  create  secret  docker-registry  myimgsec  --docker-server=oracleteam.azurecr.io  --docker-username=oracleteam --docker-password=BlgxQT1K9AFB+wx3/KowWZrMVLFaQI5d  -n m-space  
+❯ 
+❯ kubectl  get  secret  -n m-space
+NAME                  TYPE                                  DATA   AGE
+default-token-6mc7w   kubernetes.io/service-account-token   3      22h
+myimgsec              kubernetes.io/dockerconfigjson        1      25s
+
+```
+
+
+
+
 
 
 
