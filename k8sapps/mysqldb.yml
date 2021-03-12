@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: m-space # my namespace 
+  creationTimestamp: null
+  labels:
+    app: dbdep
+  name: dbdep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbdep
+  strategy: {}
+  template: # template 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: dbdep
+    spec: # app section
+      volumes:
+      - name: ashudbvol 
+        nfs:  # NFS type VOLUME 
+         server: 172.31.22.60 # NFS server IP 
+         path: /db/arun # location at NFS server 
+      containers:
+      - image: mysql
+        name: mysql
+        volumeMounts:
+        - name: ashudbvol
+          mountPath: /var/lib/mysql/ # default location of MYSQL DB 
+        env: # to create/ use env variable 
+        - name: MYSQL_ROOT_PASSWORD # already present in MYSQL image
+          valueFrom:
+           secretKeyRef: # calling secret to get password 
+            name: ashusec1 # secret name 
+            key: mydbpass # key of secret where password is stored
+        resources: {}
+status: {}
